@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Văn Hóa & Lịch Sử Mỹ (Units 1-3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col items-center py-8 px-4">
+
+    <!-- Header -->
+    <header class="max-w-3xl w-full bg-white shadow-sm rounded-2xl p-6 mb-6 border border-slate-200">
+        <h1 class="text-2xl md:text-3xl font-bold text-indigo-700 text-center mb-2">🇺🇸 Quiz Văn Hóa & Lịch Sử Mỹ</h1>
+        <p class="text-slate-600 text-center text-sm md:text-base">Tổng hợp 122 câu hỏi từ Unit 1, Unit 2 và Unit 3. Chọn đáp án để kiểm tra ngay kèm bản dịch và từ khóa quan trọng!</p>
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+            <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-xs font-semibold">Unit 1: Symbols & Holidays</span>
+            <span class="bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-semibold">Unit 2: Identity & Diversity</span>
+            <span class="bg-amber-50 text-amber-700 px-3 py-1 rounded-full text-xs font-semibold">Unit 3: Geography & Regions</span>
+        </div>
+    </header>
+
+    <!-- Quiz Container -->
+    <main class="max-w-3xl w-full bg-white shadow-sm rounded-2xl p-6 md:p-8 border border-slate-200">
+        <div id="quiz-container">
+            <!-- Dynamic Questions Render Here -->
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center mt-8 pt-4 border-t border-slate-100">
+            <button id="prev-btn" onclick="prevQuestion()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium px-5 py-2.5 rounded-xl transition disabled:opacity-40 disabled:cursor-not-allowed">
+                ← Câu trước
+            </button>
+            <span id="progress-indicator" class="text-sm font-semibold text-slate-500">Câu 1 / 122</span>
+            <button id="next-btn" onclick="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2.5 rounded-xl transition">
+                Câu tiếp →
+            </button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-8 text-center text-xs text-slate-400">
+        Được thiết kế để hỗ trợ ôn tập hiệu quả môn Văn hóa & Lịch sử Mỹ.
+    </footer>
+
+    <script>
+        const rawQuestions = [
+            {
+                q: "What do national symbols help express in American culture?",
+                options: [
+                    { text: "Shared values and national identity", correct: true },
+                    { text: "Only economic statistics", correct: false },
+                    { text: "Private family decisions", correct: false },
+                    { text: "Regional weather patterns", correct: false }
+                ],
+                trans: "Các biểu tượng quốc gia giúp thể hiện điều gì trong văn hóa Mỹ?",
+                keyWords: "national symbols (biểu tượng quốc gia), shared values (giá trị chung), national identity (bản sắc quốc gia)"
+            },
+            {
+                q: "How many stripes are on the current American flag?",
+                options: [
+                    { text: "Fifty", correct: false },
+                    { text: "Thirteen", correct: true },
+                    { text: "Fifteen", correct: false },
+                    { text: "Ten", correct: false }
+                ],
+                trans: "Có bao nhiêu sọc trên quốc kỳ hiện tại của Mỹ?",
+                keyWords: "stripes (các sọc), current American flag (quốc kỳ Mỹ hiện tại), thirteen (13)"
+            },
+            {
+                q: "What do the thirteen stripes on the U.S. flag represent?",
+                options: [
+                    { text: "The first thirteen presidents", correct: false },
+                    { text: "Thirteen constitutional amendments", correct: false },
+                    { text: "The original thirteen colonies", correct: true },
+                    { text: "Thirteen national parks", correct: false }
+                ],
+                trans: "Mười ba sọc trên quốc kỳ Mỹ đại diện cho điều gì?",
+                keyWords: "represent (đại diện), original thirteen colonies (13 thuộc địa ban đầu)"
+            },
+            {
+                q: "What do the fifty stars on the U.S. flag represent?",
+                options: [
+                    { text: "Fifty original colonies", correct: false },
+                    { text: "Fifty presidents", correct: false },
+                    { text: "The fifty largest cities", correct: false },
+                    { text: "The fifty states", correct: true }
+                ],
+                trans: "Năm mươi ngôi sao trên quốc kỳ Mỹ đại diện cho điều gì?",
+                keyWords: "fifty stars (50 ngôi sao), fifty states (50 tiểu bang)"
+            },
+            {
+                q: "Which ideals are associated with American national symbols?",
+                options: [
+                    { text: "Isolation, censorship, and uniformity", correct: false },
+                    { text: "Monarchy, conquest, and hereditary rule", correct: false },
+                    { text: "Military rule and religious authority", correct: false },
+                    { text: "Liberty, democracy, equality, and self-government", correct: true }
+                ],
+                trans: "Những lý tưởng nào được liên kết với các biểu tượng quốc gia Mỹ?",
+                keyWords: "ideals (lý tưởng), liberty (tự do), democracy (dân chủ), equality (bình đẳng), self-government (tự trị)"
+            },
+            {
+                q: "Where is the Statue of Liberty located?",
+                options: [
+                    { text: "The National Mall in Washington, D.C.", correct: false },
+                    { text: "Plymouth, Massachusetts", correct: false },
+                    { text: "Philadelphia Harbor", correct: false },
+                    { text: "Liberty Island in New York Harbor", correct: true }
+                ],
+                trans: "Tượng Nữ thần Tự do nằm ở đâu?",
+                keyWords: "Statue of Liberty (Tượng Nữ thần Tự do), Liberty Island (Đảo Tự do), New York Harbor (Cảng New York)"
+            },
+            {
+                q: "Which country presented the Statue of Liberty to the United States?",
+                options: [
+                    { text: "Canada", correct: false },
+                    { text: "Spain", correct: false },
+                    { text: "France", correct: true },
+                    { text: "Britain", correct: false }
+                ],
+                trans: "Quốc gia nào đã tặng Tượng Nữ thần Tự do cho Hoa Kỳ?",
+                keyWords: "presented (tặng/trình bày), France (Pháp)"
+            },
+            {
+                q: "In what year was the Statue of Liberty dedicated?",
+                options: [
+                    { text: "1776", correct: false },
+                    { text: "1621", correct: false },
+                    { text: "1931", correct: false },
+                    { text: "1886", correct: true }
+                ],
+                trans: "Tượng Nữ thần Tự do được khánh thành vào năm nào?",
+                keyWords: "dedicated (khánh thành/cung hiến), 1886"
+            },
+            {
+                q: "What did the Statue of Liberty represent to many immigrants?",
+                options: [
+                    { text: "Freedom, hope, and opportunity", correct: true },
+                    { text: "The authority of the monarchy", correct: false },
+                    { text: "A warning against migration", correct: false },
+                    { text: "The end of all economic inequality", correct: false }
+                ],
+                trans: "Tượng Nữ thần Tự do biểu thị điều gì đối với nhiều người nhập cư?",
+                keyWords: "immigrants (người nhập cư), freedom (tự do), hope (hy vọng), opportunity (cơ hội)"
+            },
+            {
+                q: "The Liberty Bell is most closely associated with which historical theme?",
+                options: [
+                    { text: "The founding of the United Nations", correct: false },
+                    { text: "The Industrial Revolution", correct: false },
+                    { text: "Independence and self-government", correct: true },
+                    { text: "The Civil War's end only", correct: false }
+                ],
+                trans: "Chuông Tự do gắn liền nhất với chủ đề lịch sử nào?",
+                keyWords: "Liberty Bell (Chuông Tự do), independence (độc lập), self-government (tự trị)"
+            },
+            {
+                q: "Why is the Liberty Bell notable today?",
+                options: [
+                    { text: "It contains fifty stars", correct: false },
+                    { text: "It was presented by France", correct: false },
+                    { text: "It is rung every Independence Day", correct: false },
+                    { text: "Its famous crack and symbolic meaning", correct: true }
+                ],
+                trans: "Tại sao Chuông Tự do lại đáng chú ý ngày nay?",
+                keyWords: "notable (đáng chú ý), famous crack (vết nứt nổi tiếng), symbolic meaning (ý nghĩa biểu tượng)"
+            },
+            {
+                q: "What is the bald eagle's role in the United States?",
+                options: [
+                    { text: "National anthem", correct: false },
+                    { text: "First constitutional amendment", correct: false },
+                    { text: "Official national holiday", correct: false },
+                    { text: "Official national emblem", correct: true }
+                ],
+                trans: "Vai trò của đại bàng đầu trắng ở Hoa Kỳ là gì?",
+                keyWords: "bald eagle (đại bàng đầu trắng), official national emblem (quốc huy/biểu tượng quốc gia chính thức)"
+            },
+            {
+                q: "In what year was the bald eagle adopted as the national emblem?",
+                options: [
+                    { text: "1863", correct: false },
+                    { text: "1782", correct: true },
+                    { text: "1931", correct: false },
+                    { text: "1886", correct: false }
+                ],
+                trans: "Đại bàng đầu trắng được chọn làm biểu tượng quốc gia vào năm nào?",
+                keyWords: "adopted (được thông qua/chọn làm), national emblem (biểu tượng quốc gia), 1782"
+            },
+            {
+                q: "What is the Pledge of Allegiance?",
+                options: [
+                    { text: "A holiday meal", correct: false },
+                    { text: "A public affirmation of loyalty to the nation", correct: true },
+                    { text: "A court judgment", correct: false },
+                    { text: "A treaty with France", correct: false }
+                ],
+                trans: "Lời tuyên thệ trung thành (Pledge of Allegiance) là gì?",
+                keyWords: "Pledge of Allegiance (Lời tuyên thệ trung thành), public affirmation (sự khẳng định công khai), loyalty (sự trung thành)"
+            },
+            {
+                q: "Which song became the U.S. national anthem in 1931?",
+                options: [
+                    { text: "America the Beautiful", correct: false },
+                    { text: "The Star-Spangled Banner", correct: true },
+                    { text: "God Bless America", correct: false },
+                    { text: "Yankee Doodle", correct: false }
+                ],
+                trans: "Bài hát nào trở thành quốc ca Hoa Kỳ vào năm 1931?",
+                keyWords: "national anthem (quốc ca), The Star-Spangled Banner (Lá cờ lấp lánh ánh sao)"
+            },
+            {
+                q: "What is Thanksgiving primarily associated with in contemporary American culture?",
+                options: [
+                    { text: "The adoption of the Constitution", correct: false },
+                    { text: "Military victory and conquest", correct: false },
+                    { text: "The beginning of summer", correct: false },
+                    { text: "Gratitude, family, and community", correct: true }
+                ],
+                trans: "Lễ Tạ ơn chủ yếu gắn liền với điều gì trong văn hóa Mỹ đương đại?",
+                keyWords: "contemporary (đương đại), gratitude (sự biết ơn), family (gia đình), community (cộng đồng)"
+            },
+            {
+                q: "On which day is Thanksgiving celebrated in the United States?",
+                options: [
+                    { text: "July 4", correct: false },
+                    { text: "The first Monday in September", correct: false },
+                    { text: "December 25", correct: false },
+                    { text: "The fourth Thursday of November", correct: true }
+                ],
+                trans: "Lễ Tạ ơn được tổ chức vào ngày nào ở Hoa Kỳ?",
+                keyWords: "celebrated (được kỷ niệm/tổ chức), fourth Thursday of November (thứ Năm thứ tư của tháng 11)"
+            },
+            {
+                q: "Which president proclaimed Thanksgiving a national holiday in 1863?",
+                options: [
+                    { text: "George Washington", correct: false },
+                    { text: "Abraham Lincoln", correct: true },
+                    { text: "Thomas Jefferson", correct: false },
+                    { text: "John F. Kennedy", correct: false }
+                ],
+                trans: "Tổng thống nào đã tuyên bố Lễ Tạ ơn là ngày lễ quốc gia vào năm 1863?",
+                keyWords: "proclaimed (tuyên bố), national holiday (ngày lễ quốc gia), Abraham Lincoln"
+            },
+            {
+                q: "The First Thanksgiving is commonly associated with which year?",
+                options: [
+                    { text: "1787", correct: false },
+                    { text: "1492", correct: false },
+                    { text: "1776", correct: false },
+                    { text: "1621", correct: true }
+                ],
+                trans: "Lễ Tạ ơn đầu tiên thường gắn liền với năm nào?",
+                keyWords: "First Thanksgiving (Lễ Tạ ơn đầu tiên), 1621"
+            },
+            {
+                q: "Which Native American people are mentioned in the coursebook's account of the 1621 harvest feast?",
+                options: [
+                    { text: "The Cherokee only", correct: false },
+                    { text: "The Wampanoag", correct: true },
+                    { text: "The Navajo", correct: false },
+                    { text: "The Apache", correct: false }
+                ],
+                trans: "Bộ tộc người Mỹ bản địa nào được nhắc đến trong sách về bữa tiệc thu hoạch năm 1621?",
+                keyWords: "Native American (người Mỹ bản địa), harvest feast (bữa tiệc thu hoạch), Wampanoag"
+            },
+            {
+                q: "How did Native Americans help the Pilgrims?",
+                options: [
+                    { text: "They taught them to grow crops, fish, and adapt locally", correct: true },
+                    { text: "They built the Statue of Liberty", correct: false },
+                    { text: "They led the Continental Congress", correct: false },
+                    { text: "They drafted the Constitution", correct: false }
+                ],
+                trans: "Người Mỹ bản địa đã giúp những người hành hương (Pilgrims) như thế nào?",
+                keyWords: "Pilgrims (người hành hương), grow crops (trồng trọt), fish (đánh bắt cá), adapt locally (thích nghi tại địa phương)"
+            },
+            {
+                q: "What ship carried the Pilgrims to North America in 1620?",
+                options: [
+                    { text: "The Constitution", correct: false },
+                    { text: "The Mayflower", correct: true },
+                    { text: "The Liberty", correct: false },
+                    { text: "The Santa Maria", correct: false }
+                ],
+                trans: "Con tàu nào đã chở những người hành hương đến Bắc Mỹ vào năm 1620?",
+                keyWords: "ship (con tàu), North America (Bắc Mỹ), The Mayflower (tàu Mayflower)"
+            },
+            {
+                q: "What was the Mayflower Compact intended to establish?",
+                options: [
+                    { text: "Principles of self-government and majority rule", correct: true },
+                    { text: "The Bill of Rights", correct: false },
+                    { text: "A national anthem", correct: false },
+                    { text: "A system of hereditary monarchy", correct: false }
+                ],
+                trans: "Hiệp ước Mayflower Compact nhằm thiết lập điều gì?",
+                keyWords: "Mayflower Compact (Hiệp ước Mayflower), self-government (tự trị), majority rule (quy tắc đa số)"
+            },
+            {
+                q: "What does Independence Day commemorate?",
+                options: [
+                    { text: "The adoption of the Declaration of Independence", correct: true },
+                    { text: "The ratification of the Constitution", correct: false },
+                    { text: "The end of the Civil War", correct: false },
+                    { text: "The arrival of the Mayflower", correct: false }
+                ],
+                trans: "Ngày Độc lập kỷ niệm sự kiện gì?",
+                keyWords: "commemorate (kỷ niệm), adoption (sự thông qua), Declaration of Independence (Tuyên ngôn Độc lập)"
+            },
+            {
+                q: "On what date is American Independence Day celebrated?",
+                options: [
+                    { text: "November Thanksgiving", correct: false },
+                    { text: "June 14", correct: false },
+                    { text: "July 4", correct: true },
+                    { text: "September 17", correct: false }
+                ],
+                trans: "Ngày Độc lập của Mỹ được tổ chức vào ngày nào?",
+                keyWords: "Independence Day (Ngày Độc lập), July 4 (ngày 4 tháng 7)"
+            },
+            {
+                q: "Who drafted the Declaration of Independence?",
+                options: [
+                    { text: "Abraham Lincoln", correct: false },
+                    { text: "Benjamin Franklin alone", correct: false },
+                    { text: "George Washington", correct: false },
+                    { text: "Thomas Jefferson", correct: true }
+                ],
+                trans: "Ai là người thảo ra Tuyên ngôn Độc lập?",
+                keyWords: "drafted (soạn thảo), Thomas Jefferson"
+            },
+            {
+                q: "In what year was the Declaration of Independence adopted?",
+                options: [
+                    { text: "1787", correct: false },
+                    { text: "1886", correct: false },
+                    { text: "1863", correct: false },
+                    { text: "1776", correct: true }
+                ],
+                trans: "Tuyên ngôn Độc lập được thông qua vào năm nào?",
+                keyWords: "adopted (được thông qua), 1776"
+            },
+            {
+                q: "Which rights are named in the Declaration of Independence?",
+                options: [
+                    { text: "Housing, travel, and employment", correct: false },
+                    { text: "Speech, privacy, and trial by jury only", correct: false },
+                    { text: "Life, liberty, and the pursuit of happiness", correct: true },
+                    { text: "Education, healthcare, and retirement", correct: false }
+                ],
+                trans: "Những quyền nào được nêu tên trong Tuyên ngôn Độc lập?",
+                keyWords: "rights (các quyền), life (sự sống), liberty (tự do), pursuit of happiness (mưu cầu hạnh phúc)"
+            },
+            {
+                q: "Which activities commonly mark Independence Day?",
+                options: [
+                    { text: "Only religious services", correct: false },
+                    { text: "Presidential elections every year", correct: false },
+                    { text: "Harvest feasts in November", correct: false },
+                    { text: "Fireworks, parades, concerts, and speeches", correct: true }
+                ],
+                trans: "Những hoạt động nào thường đánh dấu Ngày Độc lập?",
+                keyWords: "mark (đánh dấu), fireworks (pháo hoa), parades (diễu hành), concerts (hòa nhạc), speeches (bài phát biểu)"
+            },
+            {
+                q: "What does 'patriotism' mean in the coursebook vocabulary?",
+                options: [
+                    { text: "Love for and loyalty to one's country", correct: true },
+                    { text: "Movement between countries", correct: false },
+                    { text: "Unfair treatment", correct: false },
+                    { text: "The legal membership of a nation", correct: false }
+                ],
+                trans: "'Patriotism' (lòng yêu nước) có nghĩa là gì trong từ vựng của khóa học?",
+                keyWords: "patriotism (lòng yêu nước), love for and loyalty to one's country (tình yêu và sự trung thành đối với đất nước)"
+            },
+            {
+                q: "What is 'gratitude'?",
+                options: [
+                    { text: "Freedom from foreign control", correct: false },
+                    { text: "The feeling of being thankful", correct: true },
+                    { text: "A national symbol", correct: false },
+                    { text: "A system of government", correct: false }
+                ],
+                trans: "'Gratitude' (lòng biết ơn) là gì?",
+                keyWords: "gratitude (lòng biết ơn), feeling of being thankful (cảm giác biết ơn)"
+            },
+            {
+                q: "What is an anthem?",
+                options: [
+                    { text: "An official song representing a nation or group", correct: true },
+                    { text: "A written constitution", correct: false },
+                    { text: "A monument with a crack", correct: false },
+                    { text: "A formal election", correct: false }
+                ],
+                trans: "'Anthem' (bài thánh ca/quốc ca) là gì?",
+                keyWords: "anthem (bài hát chính thức/quốc ca), official song (bài hát chính thức)"
+            },
+            {
+                q: "What is public memory?",
+                options: [
+                    { text: "A society's shared understanding of its past", correct: true },
+                    { text: "A person's private diary", correct: false },
+                    { text: "A list of current laws only", correct: false },
+                    { text: "A record of weather patterns", correct: false }
+                ],
+                trans: "'Public memory' (ký ức cộng đồng/công cộng) là gì?",
+                keyWords: "public memory (ký ức công cộng), shared understanding of its past (sự hiểu biết chung về quá khứ)"
+            },
+            {
+                q: "Why can national symbols become controversial?",
+                options: [
+                    { text: "Groups may disagree about what they represent", correct: true },
+                    { text: "They have no connection to history", correct: false },
+                    { text: "They are used only by tourists", correct: false },
+                    { text: "They never change in meaning", correct: false }
+                ],
+                trans: "Tại sao các biểu tượng quốc gia có thể gây tranh cãi?",
+                keyWords: "controversial (gây tranh cãi), disagree (không đồng ý), represent (đại diện)"
+            },
+            {
+                q: "What is the main cultural function of national holidays?",
+                options: [
+                    { text: "They determine state borders", correct: false },
+                    { text: "They replace all historical education", correct: false },
+                    { text: "They preserve memory and communicate shared values", correct: true },
+                    { text: "They eliminate cultural differences", correct: false }
+                ],
+                trans: "Chức năng văn hóa chính của các ngày lễ quốc gia là gì?",
+                keyWords: "cultural function (chức năng văn hóa), preserve memory (bảo tồn ký ức), shared values (giá trị chung)"
+            },
+            {
+                q: "What does the coursebook say about the traditional Thanksgiving story?",
+                options: [
+                    { text: "It was created by the Supreme Court", correct: false },
+                    { text: "It began in 1776", correct: false },
+                    { text: "It has no connection to Native peoples", correct: false },
+                    { text: "Its history is more complex than the familiar school narrative", correct: true }
+                ],
+                trans: "Sách giáo khoa nói gì về câu chuyện Lễ Tạ ơn truyền thống?",
+                keyWords: "traditional story (câu chuyện truyền thống), complex (phức tạp), familiar school narrative (câu chuyện quen thuộc ở trường học)"
+            },
+            {
+                q: "Which foods are listed as traditional Thanksgiving dishes?",
+                options: [
+                    { text: "Sushi, noodles, and dumplings", correct: false },
+                    { text: "Tacos, paella, and olives", correct: false },
+                    { text: "Turkey, stuffing, cranberry sauce, sweet potatoes, and pumpkin pie", correct: true },
+                    { text: "Fish and chips only", correct: false }
+                ],
+                trans: "Những món ăn nào được liệt kê là món ăn truyền thống trong Lễ Tạ ơn?",
+                keyWords: "traditional dishes (món ăn truyền thống), turkey (gà tây), stuffing (nhân bánh), pumpkin pie (bánh bí ngô)"
+            },
+            {
+                q: "What does 'commemoration' mean?",
+                options: [
+                    { text: "Publicly remembering an important person or event", correct: true },
+                    { text: "Adopting another culture", correct: false },
+                    { text: "Electing representatives", correct: false },
+                    { text: "Moving to a new country", correct: false }
+                ],
+                trans: "'Commemoration' (sự tưởng niệm/kỷ niệm) có nghĩa là gì?",
+                keyWords: "commemoration (sự tưởng niệm), publicly remembering (nhớ đến một cách công khai)"
+            },
+            {
+                q: "Which holiday is often called 'America's Birthday'?",
+                options: [
+                    { text: "Thanksgiving", correct: false },
+                    { text: "Memorial Day", correct: false },
+                    { text: "July 4 / Independence Day", correct: true },
+                    { text: "Labor Day", correct: false }
+                ],
+                trans: "Ngày lễ nào thường được gọi là 'Sinh nhật nước Mỹ'?",
+                keyWords: "America's Birthday (Sinh nhật nước Mỹ), Independence Day (Ngày Độc lập)"
+            },
+            {
+                q: "What is the central message of the Mayflower Compact in American political culture?",
+                options: [
+                    { text: "Government should be inherited by one family", correct: false },
+                    { text: "Citizens should avoid public participation", correct: false },
+                    { text: "Government should derive authority from the consent of the governed", correct: true },
+                    { text: "States should have no local authority", correct: false }
+                ],
+                trans: "Thông điệp trung tâm của Hiệp ước Mayflower trong văn hóa chính trị Mỹ là gì?",
+                keyWords: "central message (thông điệp trung tâm), consent of the governed (sự ưng thuận của người bị trị)"
+            },
+            {
+                q: "What can studying symbols and holidays help students understand?",
+                options: [
+                    { text: "National identity, cultural values, and public memory", correct: true },
+                    { text: "Only modern technology", correct: false },
+                    { text: "Only American geography", correct: false },
+                    { text: "Only the national economy", correct: false }
+                ],
+                trans: "Việc nghiên cứu các biểu tượng và ngày lễ giúp học sinh hiểu điều gì?",
+                keyWords: "national identity (bản sắc quốc gia), cultural values (giá trị văn hóa), public memory (ký ức công cộng)"
+            },
+            {
+                q: "Why is the United States often described as a 'nation of immigrants'?",
+                options: [
+                    { text: "It has no Indigenous history", correct: false },
+                    { text: "Migration has strongly shaped its population and culture", correct: true },
+                    { text: "All residents arrived in one year", correct: false },
+                    { text: "Immigration ended in the eighteenth century", correct: false }
+                ],
+                trans: "Tại sao Hoa Kỳ thường được mô tả là 'quốc gia của những người nhập cư'?",
+                keyWords: "nation of immigrants (quốc gia của người nhập cư), migration (sự di cư), shaped population and culture (định hình dân số và văn hóa)"
+            },
+            {
+                q: "Who lived throughout North America long before European settlers arrived?",
+                options: [
+                    { text: "Only French traders", correct: false },
+                    { text: "Native American peoples", correct: true },
+                    { text: "Only English settlers", correct: false },
+                    { text: "No permanent communities", correct: false }
+                ],
+                trans: "Ai đã sinh sống khắp Bắc Mỹ từ lâu trước khi những người định cư châu Âu đến?",
+                keyWords: "North America (Bắc Mỹ), Native American peoples (các dân tộc Mỹ bản địa)"
+            },
+            {
+                q: "How did the experience of enslaved Africans differ from voluntary immigration?",
+                options: [
+                    { text: "They were forcibly transported and denied freedom", correct: true },
+                    { text: "They were automatically granted citizenship", correct: false },
+                    { text: "They all chose to migrate for education", correct: false },
+                    { text: "They arrived only after 1965", correct: false }
+                ],
+                trans: "Trải nghiệm của những người châu Phi bị nô lệ hóa khác gì với việc nhập cư tự nguyện?",
+                keyWords: "enslaved Africans (người châu Phi bị nô lệ), forcibly transported (bị cưỡng bức vận chuyển), denied freedom (bị tước đoạt tự do)"
+            },
+            {
+                q: "Which group came to the United States in large numbers during the nineteenth century after famine?",
+                options: [
+                    { text: "Australian miners", correct: false },
+                    { text: "French royal families", correct: false },
+                    { text: "Irish immigrants", correct: true },
+                    { text: "Japanese tourists", correct: false }
+                ],
+                trans: "Nhóm nào đến Mỹ số lượng lớn trong thế kỷ 19 sau nạn đói?",
+                keyWords: "nineteenth century (thế kỷ 19), famine (nạn đói), Irish immigrants (người nhập cư Ai-len)"
+            },
+            {
+                q: "Chinese laborers are noted in the coursebook for helping build what?",
+                options: [
+                    { text: "The Statue of Liberty", correct: false },
+                    { text: "The White House", correct: false },
+                    { text: "The first state capitol", correct: false },
+                    { text: "Railroads in the American West", correct: true }
+                ],
+                trans: "Công nhân Trung Quốc được ghi nhận trong sách là đã giúp xây dựng công trình gì?",
+                keyWords: "Chinese laborers (công nhân Trung Quốc), railroads (đường sắt), American West (Miền Tây nước Mỹ)"
+            },
+            {
+                q: "Which law significantly shifted U.S. immigration patterns in 1965?",
+                options: [
+                    { text: "The Bill of Rights", correct: false },
+                    { text: "The Immigration and Nationality Act", correct: true },
+                    { text: "The Mayflower Compact", correct: false },
+                    { text: "The Homestead Act", correct: false }
+                ],
+                trans: "Đạo luật nào đã thay đổi đáng kể mô hình nhập cư của Mỹ vào năm 1965?",
+                keyWords: "shifted (thay đổi/chuyển dịch), Immigration and Nationality Act (Đạo luật Nhập cư và Quốc tịch)"
+            },
+            {
+                q: "What does 'migration' mean?",
+                options: [
+                    { text: "A constitutional court", correct: false },
+                    { text: "A national song", correct: false },
+                    { text: "A form of taxation", correct: false },
+                    { text: "Movement of people from one place to another", correct: true }
+                ],
+                trans: "'Migration' (sự di cư) có nghĩa là gì?",
+                keyWords: "migration (sự di cư), movement of people (sự di chuyển của con người)"
+            },
+            {
+                q: "What is an immigrant?",
+                options: [
+                    { text: "A person visiting briefly as a tourist", correct: false },
+                    { text: "A person who writes laws", correct: false },
+                    { text: "A person who moves to another country to live", correct: true },
+                    { text: "A person born only in the capital", correct: false }
+                ],
+                trans: "'Immigrant' (người nhập cư) là ai?",
+                keyWords: "immigrant (người nhập cư), moves to another country to live (chuyển đến quốc gia khác để sinh sống)"
+            },
+            {
+                q: "What does assimilation generally involve?",
+                options: [
+                    { text: "Maintaining every practice without any interaction", correct: false },
+                    { text: "Electing a president", correct: false },
+                    { text: "Adopting aspects of another or dominant culture", correct: true },
+                    { text: "Dividing a country into states", correct: false }
+                ],
+                trans: "'Assimilation' (sự đồng hóa) nhìn chung bao gồm điều gì?",
+                keyWords: "assimilation (sự đồng hóa), adopting aspects (tiếp thu các khía cạnh), dominant culture (văn hóa thống trị)"
+            },
+            {
+                q: "What is multiculturalism?",
+                options: [
+                    { text: "The coexistence of multiple cultures", correct: true },
+                    { text: "The elimination of cultural differences", correct: false },
+                    { text: "A form of geographic isolation", correct: false },
+                    { text: "A system with one political party", correct: false }
+                ],
+                trans: "'Multiculturalism' (chủ nghĩa đa văn hóa) là gì?",
+                keyWords: "multiculturalism (chủ nghĩa đa văn hóa), coexistence (sự cùng tồn tại), multiple cultures (nhiều nền văn hóa)"
+            },
+            {
+                q: "What does cultural diversity refer to?",
+                options: [
+                    { text: "Variety among people, cultures, or backgrounds", correct: true },
+                    { text: "A uniform language policy", correct: false },
+                    { text: "A lack of cultural traditions", correct: false },
+                    { text: "A single shared ancestry", correct: false }
+                ],
+                trans: "'Cultural diversity' (sự đa dạng văn hóa) ám chỉ điều gì?",
+                keyWords: "cultural diversity (sự đa dạng văn hóa), variety (sự đa dạng/phong phú), backgrounds (hoàn cảnh/gốc gác)"
+            },
+            {
+                q: "What is citizenship?",
+                options: [
+                    { text: "A person's favorite cultural tradition", correct: false },
+                    { text: "An informal social club", correct: false },
+                    { text: "Legal membership in a nation", correct: true },
+                    { text: "The movement of people across regions", correct: false }
+                ],
+                trans: "'Citizenship' (tư cách công dân/quốc tịch) là gì?",
+                keyWords: "citizenship (quốc tịch/tư cách công dân), legal membership (tư cách thành viên hợp pháp)"
+            },
+            {
+                q: "What does ethnicity refer to?",
+                options: [
+                    { text: "A type of government", correct: false },
+                    { text: "A shared cultural or ancestral background", correct: true },
+                    { text: "A person's job title", correct: false },
+                    { text: "A national holiday", correct: false }
+                ],
+                trans: "'Ethnicity' (dân tộc/sắc tộc) ám chỉ điều gì?",
+                keyWords: "ethnicity (sắc tộc), shared cultural or ancestral background (nền tảng văn hóa hoặc tổ tiên chung)"
+            },
+            {
+                q: "What is discrimination?",
+                options: [
+                    { text: "The preservation of heritage", correct: false },
+                    { text: "The legal process of voting", correct: false },
+                    { text: "The celebration of diversity", correct: false },
+                    { text: "Unfair treatment based on group membership", correct: true }
+                ],
+                trans: "'Discrimination' (sự phân biệt đối xử) là gì?",
+                keyWords: "discrimination (sự phân biệt đối xử), unfair treatment (sự đối xử bất công), group membership (thành viên nhóm)"
+            },
+            {
+                q: "What does the melting pot model suggest?",
+                options: [
+                    { text: "Different groups blend into a common culture", correct: true },
+                    { text: "Only one immigrant group may participate", correct: false },
+                    { text: "Groups remain entirely separate from society", correct: false },
+                    { text: "Culture is determined only by geography", correct: false }
+                ],
+                trans: "Mô hình 'melting pot' (nồi nấu chảy) ngụ ý điều gì?",
+                keyWords: "melting pot (nồi nấu chảy), blend into a common culture (hòa quyện vào một nền văn hóa chung)"
+            },
+            {
+                q: "What is a common criticism of the melting pot model?",
+                options: [
+                    { text: "It requires people to speak many languages", correct: false },
+                    { text: "It rejects all common values", correct: false },
+                    { text: "It prevents any shared identity", correct: false },
+                    { text: "It may pressure minorities to abandon their cultures", correct: true }
+                ],
+                trans: "Lời chỉ trích phổ biến đối với mô hình nồi nấu chảy là gì?",
+                keyWords: "criticism (lời chỉ trích), pressure minorities (gây áp lực lên các nhóm thiểu số), abandon cultures (từ bỏ văn hóa)"
+            },
+            {
+                q: "What does the salad bowl model emphasize?",
+                options: [
+                    { text: "Groups can preserve distinct cultures while sharing society", correct: true },
+                    { text: "Immigrants cannot participate in public life", correct: false },
+                    { text: "Only food traditions matter", correct: false },
+                    { text: "All cultural identities must disappear", correct: false }
+                ],
+                trans: "Mô hình 'salad bowl' (tô salad) nhấn mạnh điều gì?",
+                keyWords: "salad bowl (tô salad), preserve distinct cultures (bảo tồn các nền văn hóa riêng biệt), sharing society (chia sẻ xã hội chung)"
+            },
+            {
+                q: "How does the salad bowl metaphor describe cultural groups?",
+                options: [
+                    { text: "Like branches of government", correct: false },
+                    { text: "Like isolated countries at war", correct: false },
+                    { text: "Like distinct ingredients contributing to one dish", correct: true },
+                    { text: "Like identical pieces of metal", correct: false }
+                ],
+                trans: "Ẩn dụ tô salad miêu tả các nhóm văn hóa như thế nào?",
+                keyWords: "metaphor (ẩn dụ), distinct ingredients (các nguyên liệu riêng biệt), one dish (một món ăn)"
+            },
+            {
+                q: "What does it mean to say identity can be hybrid?",
+                options: [
+                    { text: "A person must have only one cultural influence", correct: false },
+                    { text: "Identity is determined only by citizenship", correct: false },
+                    { text: "Identity never changes", correct: false },
+                    { text: "A person can identify with multiple cultures at once", correct: true }
+                ],
+                trans: "Nói danh tính có tính 'hybrid' (lai/đa dạng) nghĩa là gì?",
+                keyWords: "hybrid (lai/pha trộn), identify with multiple cultures (đồng nhất với nhiều nền văn hóa cùng lúc)"
+            },
+            {
+                q: "Which person is described as the 'Father of His Country'?",
+                options: [
+                    { text: "Thomas Jefferson", correct: false },
+                    { text: "John F. Kennedy", correct: false },
+                    { text: "Cesar Chavez", correct: false },
+                    { text: "George Washington", correct: true }
+                ],
+                trans: "Ai được mô tả là 'Cha đẻ của Đất nước'?",
+                keyWords: "Father of His Country (Cha đẻ của Đất nước), George Washington"
+            },
+            {
+                q: "Who drafted the Declaration of Independence?",
+                options: [
+                    { text: "Thomas Jefferson", correct: true },
+                    { text: "Susan B. Anthony", correct: false },
+                    { text: "Clara Barton", correct: false },
+                    { text: "Henry Ford", correct: false }
+                ],
+                trans: "Ai đã soạn thảo Tuyên ngôn Độc lập?",
+                keyWords: "drafted (soạn thảo), Thomas Jefferson"
+            },
+            {
+                q: "Which president issued the Emancipation Proclamation during the Civil War?",
+                options: [
+                    { text: "George Washington", correct: false },
+                    { text: "Thomas Edison", correct: false },
+                    { text: "Abraham Lincoln", correct: true },
+                    { text: "John F. Kennedy", correct: false }
+                ],
+                trans: "Tổng thống nào đã ban hành Tuyên ngôn Giải phóng Nô lệ trong Nội chiến?",
+                keyWords: "Emancipation Proclamation (Tuyên ngôn Giải phóng Nô lệ), Civil War (Nội chiến), Abraham Lincoln"
+            },
+            {
+                q: "Who fought for women's suffrage and equal rights?",
+                options: [
+                    { text: "Cesar Chavez", correct: false },
+                    { text: "Clara Barton", correct: false },
+                    { text: "Susan B. Anthony", correct: true },
+                    { text: "Henry Ford", correct: false }
+                ],
+                trans: "Ai đã đấu tranh cho quyền bầu cử của phụ nữ và quyền bình đẳng?",
+                keyWords: "women's suffrage (quyền bầu cử của phụ nữ), equal rights (quyền bình đẳng), Susan B. Anthony"
+            },
+            {
+                q: "Who founded the American Red Cross, according to the coursebook?",
+                options: [
+                    { text: "Susan B. Anthony", correct: false },
+                    { text: "Betsy Ross", correct: false },
+                    { text: "Ethel Tiersky", correct: false },
+                    { text: "Clara Barton", correct: true }
+                ],
+                trans: "Ai đã thành lập Hội Chữ thập đỏ Mỹ theo sách giáo khoa?",
+                keyWords: "American Red Cross (Hội Chữ thập đỏ Mỹ), Clara Barton"
+            },
+            {
+                q: "Who advocated for agricultural workers and immigrant communities?",
+                options: [
+                    { text: "Thomas Edison", correct: false },
+                    { text: "Benjamin Franklin", correct: false },
+                    { text: "Cesar Chavez", correct: true },
+                    { text: "John F. Kennedy", correct: false }
+                ],
+                trans: "Ai đã lên tiếng bảo vệ công nhân nông nghiệp và cộng đồng nhập cư?",
+                keyWords: "advocated (lên tiếng ủng hộ), agricultural workers (công nhân nông nghiệp), Cesar Chavez"
+            },
+            {
+                q: "Who transformed modern life through technological innovation?",
+                options: [
+                    { text: "George Washington", correct: false },
+                    { text: "Cesar Chavez", correct: false },
+                    { text: "Abraham Lincoln", correct: false },
+                    { text: "Thomas Edison", correct: true }
+                ],
+                trans: "Ai đã thay đổi cuộc sống hiện đại thông qua đổi mới công nghệ?",
+                keyWords: "transformed modern life (biến đổi cuộc sống hiện đại), technological innovation (đổi mới công nghệ), Thomas Edison"
+            },
+            {
+                q: "Who revolutionized manufacturing and transportation?",
+                options: [
+                    { text: "Clara Barton", correct: false },
+                    { text: "Henry Ford", correct: true },
+                    { text: "Susan B. Anthony", correct: false },
+                    { text: "Thomas Jefferson", correct: false }
+                ],
+                trans: "Ai đã cách mạng hóa ngành sản xuất và giao thông vận tải?",
+                keyWords: "revolutionized (cách mạng hóa), manufacturing (sản xuất), transportation (giao thông), Henry Ford"
+            },
+            {
+                q: "What is the American Dream commonly understood to mean?",
+                options: [
+                    { text: "Only inherited wealth matters", correct: false },
+                    { text: "People can improve their lives through effort and determination", correct: true },
+                    { text: "Success is guaranteed regardless of circumstances", correct: false },
+                    { text: "People should avoid education", correct: false }
+                ],
+                trans: "Giấc mơ Mỹ (American Dream) thường được hiểu là gì?",
+                keyWords: "American Dream (Giấc mơ Mỹ), improve lives (cải thiện cuộc sống), effort and determination (nỗ lực và quyết tâm)"
+            },
+            {
+                q: "What is one criticism of the American Dream discussed in the coursebook?",
+                options: [
+                    { text: "Inequality can limit access to opportunity and upward mobility", correct: true },
+                    { text: "It has never influenced immigrants", correct: false },
+                    { text: "It rejects personal effort", correct: false },
+                    { text: "It is a national holiday", correct: false }
+                ],
+                trans: "Một lời chỉ trích về Giấc mơ Mỹ được thảo luận trong sách là gì?",
+                keyWords: "criticism (lời chỉ trích), inequality (sự bất bình đẳng), upward mobility (sự thăng tiến xã hội)"
+            },
+            {
+                q: "What does 'upward mobility' mean?",
+                options: [
+                    { text: "Changing national anthems", correct: false },
+                    { text: "Losing citizenship", correct: false },
+                    { text: "Moving to a different climate", correct: false },
+                    { text: "Moving to a higher social or economic position", correct: true }
+                ],
+                trans: "'Upward mobility' (sự thăng tiến xã hội/kinh tế) có nghĩa là gì?",
+                keyWords: "upward mobility (sự thăng tiến), higher social or economic position (vị trí xã hội hoặc kinh tế cao hơn)"
+            },
+            {
+                q: "Which statement about the U.S. federal level and language is given in the coursebook?",
+                options: [
+                    { text: "Every state must use the same two languages", correct: false },
+                    { text: "English is named as the only official federal language in the text", correct: false },
+                    { text: "Spanish is the sole national language", correct: false },
+                    { text: "The United States has no official national language at the federal level", correct: true }
+                ],
+                trans: "Phát biểu nào về cấp liên bang Mỹ và ngôn ngữ được đưa ra trong sách?",
+                keyWords: "federal level (cấp liên bang), no official national language (không có ngôn ngữ quốc gia chính thức)"
+            },
+            {
+                q: "What is one way immigration has influenced American life?",
+                options: [
+                    { text: "Only the national flag's number of stars", correct: false },
+                    { text: "Food, music, language, religion, literature, and politics", correct: true },
+                    { text: "It has had no cultural impact", correct: false },
+                    { text: "Only the country's mountain ranges", correct: false }
+                ],
+                trans: "Di cư đã ảnh hưởng đến đời sống nước Mỹ theo cách nào?",
+                keyWords: "influenced American life (ảnh hưởng đến đời sống Mỹ), food, music, language (thực phẩm, âm nhạc, ngôn ngữ)"
+            },
+            {
+                q: "Why is the phrase 'a nation of immigrants' sometimes considered incomplete?",
+                options: [
+                    { text: "It can overlook Indigenous peoples and the forced migration of enslaved Africans", correct: true },
+                    { text: "It refers only to the twenty-first century", correct: false },
+                    { text: "It means all migration was voluntary", correct: false },
+                    { text: "It describes only one state", correct: false }
+                ],
+                trans: "Tại sao cụm từ 'quốc gia của những người nhập cư' đôi khi bị coi là chưa đầy đủ?",
+                keyWords: "incomplete (chưa đầy đủ), overlook (bỏ sót), Indigenous peoples (người bản địa), forced migration (di cư cưỡng bức)"
+            },
+            {
+                q: "What is integration in the coursebook's vocabulary exercise?",
+                options: [
+                    { text: "Participating in society while maintaining cultural identity", correct: true },
+                    { text: "Refusing all social participation", correct: false },
+                    { text: "Replacing all laws with customs", correct: false },
+                    { text: "Moving from one state to another", correct: false }
+                ],
+                trans: "'Integration' (sự hòa nhập) trong bài tập từ vựng là gì?",
+                keyWords: "integration (sự hòa nhập), participating in society (tham gia vào xã hội), maintaining cultural identity (duy trì bản sắc văn hóa)"
+            },
+            {
+                q: "Which city is noted as highly linguistically diverse?",
+                options: [
+                    { text: "Salt Lake City only", correct: false },
+                    { text: "New York City", correct: true },
+                    { text: "Philadelphia only", correct: false },
+                    { text: "Plymouth only", correct: false }
+                ],
+                trans: "Thành phố nào được ghi nhận là có sự đa dạng ngôn ngữ cao?",
+                keyWords: "linguistically diverse (đa dạng về ngôn ngữ), New York City"
+            },
+            {
+                q: "What does the coursebook say about Native American societies?",
+                options: [
+                    { text: "They had no trade networks", correct: false },
+                    { text: "They had diverse languages, cultures, political structures, and economies", correct: true },
+                    { text: "They all shared one language and government", correct: false },
+                    { text: "They developed only after European arrival", correct: false }
+                ],
+                trans: "Sách giáo khoa nói gì về các xã hội người Mỹ bản địa?",
+                keyWords: "Native American societies (xã hội người Mỹ bản địa), diverse languages and cultures (ngôn ngữ và văn hóa đa dạng)"
+            },
+            {
+                q: "Which group is named among Native American peoples in the coursebook?",
+                options: [
+                    { text: "Normans", correct: false },
+                    { text: "Vikings", correct: false },
+                    { text: "Saxons", correct: false },
+                    { text: "Cherokee", correct: true }
+                ],
+                trans: "Nhóm nào được nêu tên trong số các dân tộc Mỹ bản địa trong sách?",
+                keyWords: "Native American peoples (các dân tộc Mỹ bản địa), Cherokee"
+            },
+            {
+                q: "What is one reason people migrate, according to the unit's overview?",
+                options: [
+                    { text: "To seek work, freedom, safety, land, or opportunity", correct: true },
+                    { text: "To avoid all cultural contact", correct: false },
+                    { text: "To eliminate their identity", correct: false },
+                    { text: "To end all political participation", correct: false }
+                ],
+                trans: "Một lý do mọi người di cư theo tổng quan bài học là gì?",
+                keyWords: "migrate (di cư), seek work, freedom, safety (tìm kiếm việc làm, tự do, an toàn)"
+            },
+            {
+                q: "How does the salad bowl model relate to national identity?",
+                options: [
+                    { text: "It treats identity as fixed and uniform", correct: false },
+                    { text: "It rejects all common institutions", correct: false },
+                    { text: "It allows shared society alongside distinct cultural traditions", correct: true },
+                    { text: "It requires everyone to share the same ancestry", correct: false }
+                ],
+                trans: "Mô hình tô salad liên quan thế nào đến bản sắc quốc gia?",
+                keyWords: "national identity (bản sắc quốc gia), shared society (xã hội chung), distinct cultural traditions (truyền thống văn hóa riêng biệt)"
+            },
+            {
+                q: "Which historical event is listed for 1882 in the unit timeline?",
+                options: [
+                    { text: "The Declaration of Independence", correct: false },
+                    { text: "The Mayflower Compact", correct: false },
+                    { text: "The Immigration and Nationality Act", correct: false },
+                    { text: "The Chinese Exclusion Act", correct: true }
+                ],
+                trans: "Sự kiện lịch sử nào được liệt kê cho năm 1882 trong dòng thời gian?",
+                keyWords: "timeline (dòng thời gian), 1882, Chinese Exclusion Act (Đạo luật Loại trừ người Trung Quốc)"
+            },
+            {
+                q: "What does the coursebook suggest about American identity today?",
+                options: [
+                    { text: "It depends only on birthplace", correct: false },
+                    { text: "It is fixed and identical for everyone", correct: false },
+                    { text: "It is unrelated to immigration", correct: false },
+                    { text: "It is dynamic, evolving, and continuously negotiated", correct: true }
+                ],
+                trans: "Sách giáo khoa gợi ý gì về bản sắc Mỹ ngày nay?",
+                keyWords: "American identity (bản sắc Mỹ), dynamic (năng động), evolving (phát triển/tiến hóa), continuously negotiated (được đàm phán liên tục)"
+            },
+            {
+                q: "How has geography influenced American culture?",
+                options: [
+                    { text: "It has shaped settlement, economic development, and ways of life", correct: true },
+                    { text: "It has had no effect on history", correct: false },
+                    { text: "It eliminated regional differences", correct: false },
+                    { text: "It determines every person's beliefs completely", correct: false }
+                ],
+                trans: "Địa lý đã ảnh hưởng đến văn hóa Mỹ như thế nào?",
+                keyWords: "geography (địa lý), shaped settlement (định hình sự định cư), economic development (phát triển kinh tế), ways of life (lối sống)"
+            },
+            {
+                q: "What is geography?",
+                options: [
+                    { text: "The physical features and characteristics of a place", correct: true },
+                    { text: "A legal membership status", correct: false },
+                    { text: "A national anthem", correct: false },
+                    { text: "A political party", correct: false }
+                ],
+                trans: "'Geography' (địa lý) là gì?",
+                keyWords: "geography (địa lý), physical features (các đặc điểm vật lý), characteristics of a place (đặc điểm của một nơi)"
+            },
+            {
+                q: "What is a region?",
+                options: [
+                    { text: "A single person's identity", correct: false },
+                    { text: "A national election", correct: false },
+                    { text: "An area with shared geographical or cultural characteristics", correct: true },
+                    { text: "A constitutional amendment", correct: false }
+                ],
+                trans: "'Region' (vùng/miền) là gì?",
+                keyWords: "region (vùng miền), area with shared characteristics (vùng có các đặc điểm chung về địa lý hoặc văn hóa)"
+            },
+            {
+                q: "What is a landscape?",
+                options: [
+                    { text: "The visible natural and human-made features of an area", correct: true },
+                    { text: "A type of citizenship", correct: false },
+                    { text: "A national holiday", correct: false },
+                    { text: "A list of federal judges", correct: false }
+                ],
+                trans: "'Landscape' (cảnh quan) là gì?",
+                keyWords: "landscape (cảnh quan), visible natural and human-made features (các đặc điểm tự nhiên và do con người tạo ra có thể nhìn thấy)"
+            },
+            {
+                q: "What does 'frontier' mean in the unit vocabulary?",
+                options: [
+                    { text: "A national border treaty", correct: false },
+                    { text: "The center of a large city", correct: false },
+                    { text: "The edge of settled territory, especially during expansion", correct: true },
+                    { text: "A form of local election", correct: false }
+                ],
+                trans: "'Frontier' (vùng biên viễn/vùng đất mới khai phá) có nghĩa là gì?",
+                keyWords: "frontier (vùng biên giới/vùng khai hoang), edge of settled territory (rìa lãnh thổ đã định cư), expansion (sự bành trướng)"
+            },
+            {
+                q: "What is a landmark?",
+                options: [
+                    { text: "A well-known natural or human-made feature", correct: true },
+                    { text: "A person who moves countries", correct: false },
+                    { text: "A type of national holiday", correct: false },
+                    { text: "A branch of government", correct: false }
+                ],
+                trans: "'Landmark' (danh thắng/mốc lịch sử) là gì?",
+                keyWords: "landmark (địa danh/mốc nổi tiếng), well-known natural or human-made feature (đặc điểm tự nhiên hoặc nhân tạo nổi tiếng)"
+            },
+            {
+                q: "What is a metropolis?",
+                options: [
+                    { text: "A large and important city", correct: true },
+                    { text: "A small uninhabited island", correct: false },
+                    { text: "A mountain pass only", correct: false },
+                    { text: "A rural farm", correct: false }
+                ],
+                trans: "'Metropolis' (thành phố lớn/đô thị lớn) là gì?",
+                keyWords: "metropolis (đô thị lớn), large and important city (thành phố lớn và quan trọng)"
+            },
+            {
+                q: "What does urbanization mean?",
+                options: [
+                    { text: "The growth and expansion of cities", correct: true },
+                    { text: "The creation of a national anthem", correct: false },
+                    { text: "The disappearance of all cities", correct: false },
+                    { text: "The movement from cities to farms only", correct: false }
+                ],
+                trans: "'Urbanization' (sự đô thị hóa) có nghĩa là gì?",
+                keyWords: "urbanization (đô thị hóa), growth and expansion of cities (sự phát triển và mở rộng của các thành phố)"
+            },
+            {
+                q: "Which four broad U.S. regions are discussed in the coursebook?",
+                options: [
+                    { text: "East, Central, Islands, and Desert", correct: false },
+                    { text: "Northeast, South, Midwest, and West", correct: true },
+                    { text: "Colonies, Territories, Oceans, and Lakes", correct: false },
+                    { text: "North, Arctic, Atlantic, and Pacific", correct: false }
+                ],
+                trans: "Bốn vùng rộng lớn nào của Mỹ được thảo luận trong sách?",
+                keyWords: "four broad U.S. regions (bốn vùng lớn của Mỹ), Northeast (Đông Bắc), South (Miền Nam), Midwest (Trung Tây), West (Miền Tây)"
+            },
+            {
+                q: "Which region is specifically discussed as a separate section in Unit 3?",
+                options: [
+                    { text: "The Northeast", correct: true },
+                    { text: "The Amazon Basin", correct: false },
+                    { text: "The Sahara", correct: false },
+                    { text: "The Alps", correct: false }
+                ],
+                trans: "Vùng nào được thảo luận cụ thể như một phần riêng biệt trong Unit 3?",
+                keyWords: "separate section (phần riêng biệt), The Northeast (Miền Đông Bắc)"
+            },
+            {
+                q: "Why can regional identities differ within one country?",
+                options: [
+                    { text: "National borders prevent cultural change", correct: false },
+                    { text: "Regional identity is always illegal", correct: false },
+                    { text: "All regions have identical climates", correct: false },
+                    { text: "Regions develop distinct traditions, economies, and ways of life", correct: true }
+                ],
+                trans: "Tại sao bản sắc vùng miền có thể khác nhau trong cùng một quốc gia?",
+                keyWords: "regional identities (bản sắc vùng miền), distinct traditions and economies (truyền thống và kinh tế riêng biệt)"
+            },
+            {
+                q: "What role do major cities play in American culture?",
+                options: [
+                    { text: "They prevent migration", correct: false },
+                    { text: "They can become symbols of broader cultural ideas", correct: true },
+                    { text: "They have no symbolic significance", correct: false },
+                    { text: "They replace the federal Constitution", correct: false }
+                ],
+                trans: "Các thành phố lớn đóng vai trò gì trong văn hóa Mỹ?",
+                keyWords: "major cities (các thành phố lớn), symbols of broader cultural ideas (biểu tượng cho các ý tưởng văn hóa lớn hơn)"
+            },
+            {
+                q: "What relationship does Unit 3 explore?",
+                options: [
+                    { text: "The relationship between place, culture, and identity", correct: true },
+                    { text: "The relationship between courts and amendments only", correct: false },
+                    { text: "The relationship between elections and party slogans only", correct: false },
+                    { text: "The relationship between holidays and national anthems only", correct: false }
+                ],
+                trans: "Unit 3 khám phá mối quan hệ nào?",
+                keyWords: "relationship (mối quan hệ), place (nơi chốn), culture (văn hóa), identity (bản sắc)"
+            },
+            {
+                q: "Which physical feature can influence settlement patterns?",
+                options: [
+                    { text: "The number of constitutional amendments only", correct: false },
+                    { text: "The dates of federal elections only", correct: false },
+                    { text: "Landscape and natural geography", correct: true },
+                    { text: "The wording of the national anthem only", correct: false }
+                ],
+                trans: "Đặc điểm vật lý nào có thể ảnh hưởng đến mô hình định cư?",
+                keyWords: "settlement patterns (mô hình định cư), landscape and natural geography (cảnh quan và địa lý tự nhiên)"
+            },
+            {
+                q: "How might geography affect economic development?",
+                options: [
+                    { text: "Different resources and locations support different activities", correct: true },
+                    { text: "It makes every region economically identical", correct: false },
+                    { text: "It prevents transportation networks", correct: false },
+                    { text: "It determines all laws directly", correct: false }
+                ],
+                trans: "Địa lý có thể ảnh hưởng đến sự phát triển kinh tế như thế nào?",
+                keyWords: "economic development (phát triển kinh tế), different resources and locations (các nguồn lực và vị trí khác nhau)"
+            },
+            {
+                q: "What is a cultural region?",
+                options: [
+                    { text: "An area associated with shared cultural characteristics", correct: true },
+                    { text: "A country with one ruler", correct: false },
+                    { text: "An area with no human population", correct: false },
+                    { text: "A judicial district only", correct: false }
+                ],
+                trans: "'Cultural region' (vùng văn hóa) là gì?",
+                keyWords: "cultural region (vùng văn hóa), shared cultural characteristics (đặc điểm văn hóa chung)"
+            },
+            {
+                q: "What does the term 'regional identity' refer to?",
+                options: [
+                    { text: "Legal citizenship in another country", correct: false },
+                    { text: "The right to judicial review", correct: false },
+                    { text: "A national anthem's lyrics", correct: false },
+                    { text: "A sense of belonging connected to a particular region", correct: true }
+                ],
+                trans: "Thuật ngữ 'regional identity' (bản sắc vùng miền) ám chỉ điều gì?",
+                keyWords: "regional identity (bản sắc vùng miền), sense of belonging (cảm giác thuộc về), particular region (vùng cụ thể)"
+            },
+            {
+                q: "Why are cities often studied as cultural symbols?",
+                options: [
+                    { text: "They have no landmarks", correct: false },
+                    { text: "They are unrelated to migration", correct: false },
+                    { text: "They are always culturally identical", correct: false },
+                    { text: "They represent histories, economies, and social meanings", correct: true }
+                ],
+                trans: "Tại sao các thành phố thường được nghiên cứu như các biểu tượng văn hóa?",
+                keyWords: "cultural symbols (biểu tượng văn hóa), represent histories and economies (đại diện cho lịch sử và kinh tế)"
+            },
+            {
+                q: "What is the main point of studying U.S. regions?",
+                options: [
+                    { text: "To understand cultural variation within the United States", correct: true },
+                    { text: "To prove every American shares the same lifestyle", correct: false },
+                    { text: "To memorize only state capitals", correct: false },
+                    { text: "To study only constitutional law", correct: false }
+                ],
+                trans: "Điểm chính của việc nghiên cứu các vùng của Mỹ là gì?",
+                keyWords: "understand cultural variation (hiểu được sự biến đổi văn hóa), within the United States (trong lòng nước Mỹ)"
+            },
+            {
+                q: "Which is an example of a human-made landscape feature?",
+                options: [
+                    { text: "A natural river", correct: false },
+                    { text: "A coastline", correct: false },
+                    { text: "A mountain range formed naturally", correct: false },
+                    { text: "A city skyline", correct: true }
+                ],
+                trans: "Đâu là ví dụ về đặc điểm cảnh quan do con người tạo ra?",
+                keyWords: "human-made landscape feature (đặc điểm cảnh quan do con người tạo ra), city skyline (đường chân trời thành phố)"
+            },
+            {
+                q: "Which is an example of a natural landscape feature?",
+                options: [
+                    { text: "A skyscraper", correct: false },
+                    { text: "A stadium", correct: false },
+                    { text: "A mountain range", correct: true },
+                    { text: "A highway interchange", correct: false }
+                ],
+                trans: "Đâu là ví dụ về đặc điểm cảnh quan tự nhiên?",
+                keyWords: "natural landscape feature (đặc điểm cảnh quan tự nhiên), mountain range (dãy núi)"
+            },
+            {
+                q: "How can regional traditions develop?",
+                options: [
+                    { text: "Without any connection to place", correct: false },
+                    { text: "Only through presidential speeches", correct: false },
+                    { text: "Through history, environment, settlement, and local economies", correct: true },
+                    { text: "Only through federal court decisions", correct: false }
+                ],
+                trans: "Truyền thống vùng miền có thể phát triển như thế nào?",
+                keyWords: "regional traditions (truyền thống vùng miền), history, environment, settlement (lịch sử, môi trường, sự định cư)"
+            },
+            {
+                q: "What does the coursebook say about the size of the United States?",
+                options: [
+                    { text: "Its size and varied landscapes influence culture and identity", correct: true },
+                    { text: "Its geography is unrelated to settlement", correct: false },
+                    { text: "It is too small to have regional differences", correct: false },
+                    { text: "It has no varied landscapes", correct: false }
+                ],
+                trans: "Sách giáo khoa nói gì về kích thước của Hoa Kỳ?",
+                keyWords: "size and varied landscapes (kích thước và cảnh quan đa dạng), influence culture and identity (ảnh hưởng đến văn hóa và bản sắc)"
+            },
+            {
+                q: "Which factor can help explain different ways of life across regions?",
+                options: [
+                    { text: "Climate and physical environment", correct: true },
+                    { text: "A shared national anthem alone", correct: false },
+                    { text: "The same national flag used everywhere", correct: false },
+                    { text: "The existence of one Constitution", correct: false }
+                ],
+                trans: "Yếu tố nào có thể giúp giải thích các lối sống khác nhau giữa các vùng?",
+                keyWords: "different ways of life (các lối sống khác nhau), climate and physical environment (khí hậu và môi trường vật lý)"
+            },
+            {
+                q: "What is the cultural meaning of place?",
+                options: [
+                    { text: "A national election procedure", correct: false },
+                    { text: "The exact latitude of every town", correct: false },
+                    { text: "A list of legal rights", correct: false },
+                    { text: "The meanings and identities people associate with locations", correct: true }
+                ],
+                trans: "Ý nghĩa văn hóa của 'nơi chốn' (place) là gì?",
+                keyWords: "cultural meaning of place (ý nghĩa văn hóa của nơi chốn), meanings and identities (ý nghĩa và bản sắc mà mọi người gắn kết)"
+            },
+            {
+                q: "Which region is often associated in the unit structure with the nation's capital-city and early urban history?",
+                options: [
+                    { text: "The Northeast", correct: true },
+                    { text: "The Pacific Islands", correct: false },
+                    { text: "The Arctic Circle", correct: false },
+                    { text: "The Sahara", correct: false }
+                ],
+                trans: "Vùng nào thường gắn liền với thủ đô và lịch sử đô thị thời kỳ đầu trong Unit 3?",
+                keyWords: "capital-city (thủ đô), early urban history (lịch sử đô thị thời kỳ đầu), The Northeast (Đông Bắc)"
+            },
+            {
+                q: "What can landmarks contribute to a community?",
+                options: [
+                    { text: "The abolition of regional traditions", correct: false },
+                    { text: "A shared reference point for local or national identity", correct: true },
+                    { text: "A replacement for all public institutions", correct: false },
+                    { text: "A guarantee of economic equality", correct: false }
+                ],
+                trans: "Các danh thắng/địa danh có thể đóng góp gì cho cộng đồng?",
+                keyWords: "landmarks (danh thắng/mốc địa lý), shared reference point (điểm quy chiếu chung cho bản sắc)"
+            },
+            {
+                q: "Why is the United States culturally diverse across regions?",
+                options: [
+                    { text: "It has no internal migration", correct: false },
+                    { text: "Its history, landscapes, settlement, and economies vary", correct: true },
+                    { text: "Regional borders are permanent cultural barriers", correct: false },
+                    { text: "All areas were settled at the same time by one group", correct: false }
+                ],
+                trans: "Tại sao Hoa Kỳ đa dạng văn hóa giữa các vùng miền?",
+                keyWords: "culturally diverse (đa dạng văn hóa), history, landscapes, settlement vary (lịch sử, cảnh quan, định cư khác nhau)"
+            },
+            {
+                q: "How should regional differences be understood?",
+                options: [
+                    { text: "As irrelevant to American culture", correct: false },
+                    { text: "As proof that no national culture exists", correct: false },
+                    { text: "As varied patterns rather than absolute rules about every resident", correct: true },
+                    { text: "As identical in every state", correct: false }
+                ],
+                trans: "Sự khác biệt vùng miền nên được hiểu như thế nào?",
+                keyWords: "regional differences (khác biệt vùng miền), varied patterns (các mô hình đa dạng), absolute rules (quy tắc tuyệt đối)"
+            },
+            {
+                q: "Which topic belongs most directly to Unit 3?",
+                options: [
+                    { text: "Thanksgiving's first harvest feast", correct: false },
+                    { text: "How geography shapes regional identity", correct: true },
+                    { text: "The Electoral College vote count", correct: false },
+                    { text: "The details of the Bill of Rights", correct: false }
+                ],
+                trans: "Chủ đề nào thuộc về Unit 3 một cách trực tiếp nhất?",
+                keyWords: "Unit 3, geography shapes regional identity (địa lý định hình bản sắc vùng miền)"
+            },
+            {
+                q: "What does settlement mean in a geographical-historical context?",
+                options: [
+                    { text: "A court's constitutional opinion", correct: false },
+                    { text: "The singing of an anthem", correct: false },
+                    { text: "The establishment of communities in a place", correct: true },
+                    { text: "The process of ratifying amendments", correct: false }
+                ],
+                trans: "'Settlement' (sự định cư) có nghĩa là gì trong bối cảnh địa lý - lịch sử?",
+                keyWords: "settlement (sự định cư), establishment of communities (việc thành lập các cộng đồng)"
+            },
+            {
+                q: "What is one reason transport links matter to regional development?",
+                options: [
+                    { text: "They eliminate all cultural differences", correct: false },
+                    { text: "They connect communities and economic activities", correct: true },
+                    { text: "They make geography irrelevant", correct: false },
+                    { text: "They decide constitutional rights", correct: false }
+                ],
+                trans: "Lý do giao thông quan trọng đối với sự phát triển vùng miền là gì?",
+                keyWords: "transport links (kết nối giao thông), connect communities (kết nối các cộng đồng), economic activities (hoạt động kinh tế)"
+            },
+            {
+                q: "How can a city's image influence culture?",
+                options: [
+                    { text: "It cannot influence national identity", correct: false },
+                    { text: "It may symbolize opportunity, innovation, history, or power", correct: true },
+                    { text: "It can only represent weather", correct: false },
+                    { text: "It always represents rural life", correct: false }
+                ],
+                trans: "Hình ảnh của một thành phố có thể ảnh hưởng đến văn hóa như thế nào?",
+                keyWords: "city's image (hình ảnh thành phố), symbolize opportunity, innovation, history (biểu tượng cho cơ hội, sự đổi mới, lịch sử)"
+            },
+            {
+                q: "What is the difference between a natural and human-made feature?",
+                options: [
+                    { text: "Both must be built by governments", correct: false },
+                    { text: "Natural features form without being built by people; human-made features are constructed", correct: true },
+                    { text: "Natural features exist only in cities", correct: false },
+                    { text: "Human-made features include only rivers", correct: false }
+                ],
+                trans: "Sự khác biệt giữa đặc điểm tự nhiên và nhân tạo là gì?",
+                keyWords: "natural feature (đặc điểm tự nhiên), human-made feature (đặc điểm do con người tạo ra), constructed (được xây dựng)"
+            },
+            {
+                q: "Why does Unit 3 include regional identities?",
+                options: [
+                    { text: "To connect geographical areas with distinctive cultural experiences", correct: true },
+                    { text: "To argue that regions have no shared characteristics", correct: false },
+                    { text: "To explain how a bill becomes law", correct: false },
+                    { text: "To focus solely on individual biographies", correct: false }
+                ],
+                trans: "Tại sao Unit 3 bao gồm các bản sắc vùng miền?",
+                keyWords: "regional identities (bản sắc vùng miền), connect geographical areas (kết nối các khu vực địa lý), distinctive cultural experiences (trải nghiệm văn hóa đặc trưng)"
+            },
+            {
+                q: "Which question best reflects Unit 3's focus?",
+                options: [
+                    { text: "What does the First Amendment protect?", correct: false },
+                    { text: "Who drafted the Declaration of Independence?", correct: false },
+                    { text: "When is Thanksgiving celebrated?", correct: false },
+                    { text: "How does place shape culture and identity?", correct: true }
+                ],
+                trans: "Câu hỏi nào phản ánh đúng nhất trọng tâm của Unit 3?",
+                keyWords: "focus (trọng tâm), place shape culture and identity (nơi chốn định hình văn hóa và bản sắc)"
+            },
+            {
+                q: "What is one way geography can influence cultural traditions?",
+                options: [
+                    { text: "It determines the national anthem", correct: false },
+                    { text: "Local environments and economic activities can shape daily practices", correct: true },
+                    { text: "It makes traditions impossible", correct: false },
+                    { text: "It removes all local history", correct: false }
+                ],
+                trans: "Địa lý có thể ảnh hưởng đến truyền thống văn hóa theo cách nào?",
+                keyWords: "influence cultural traditions (ảnh hưởng truyền thống văn hóa), local environments (môi trường địa phương), daily practices (thực tiễn hàng ngày)"
+            },
+            {
+                q: "Which term describes the growth of cities?",
+                options: [
+                    { text: "Assimilation", correct: false },
+                    { text: "Ratification", correct: false },
+                    { text: "Commemoration", correct: false },
+                    { text: "Urbanization", correct: true }
+                ],
+                trans: "Thuật ngữ nào mô tả sự phát triển của các thành phố?",
+                keyWords: "growth of cities (sự phát triển của thành phố), urbanization (đô thị hóa)"
+            },
+            {
+                q: "What is the frontier in U.S. history commonly connected with?",
+                options: [
+                    { text: "The national anthem", correct: false },
+                    { text: "The edge of settled territory and expansion", correct: true },
+                    { text: "Thanksgiving foods", correct: false },
+                    { text: "The Supreme Court's judicial review", correct: false }
+                ],
+                trans: "Vùng biên giới (frontier) trong lịch sử Mỹ thường gắn liền với điều gì?",
+                keyWords: "frontier (vùng biên giới/khai hoang), edge of settled territory (rìa lãnh thổ đã định cư), expansion (sự bành trướng)"
+            },
+            {
+                q: "Why should generalizations about regions be used carefully?",
+                options: [
+                    { text: "Every resident is identical", correct: false },
+                    { text: "Individuals within a region can have different experiences and identities", correct: true },
+                    { text: "Geography has no cultural impact", correct: false },
+                    { text: "Regions have no history", correct: false }
+                ],
+                trans: "Tại sao các sự khái quát hóa về vùng miền nên được sử dụng cẩn thận?",
+                keyWords: "generalizations (sự khái quát hóa), individuals (các cá nhân), different experiences and identities (trải nghiệm và bản sắc khác nhau)"
+            }
+        ];
+
+        let currentIndex = 0;
+        const userAnswers = {};
+
+        function renderQuestion() {
+            const container = document.getElementById('quiz-container');
+            const qData = rawQuestions[currentIndex];
+            
+            document.getElementById('progress-indicator').innerText = `Câu ${currentIndex + 1} / ${rawQuestions.length}`;
+            document.getElementById('prev-btn').disabled = currentIndex === 0;
+            document.getElementById('next-btn').innerText = currentIndex === rawQuestions.length - 1 ? 'Hoàn thành' : 'Câu tiếp →';
+
+            let optionsHtml = '';
+            const answered = userAnswers[currentIndex] !== undefined;
+
+            qData.options.forEach((opt, idx) => {
+                let btnStyle = "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-indigo-300";
+                let disabledAttr = answered ? "disabled" : "";
+
+                if (answered) {
+                    const chosenIdx = userAnswers[currentIndex];
+                    if (idx === chosenIdx) {
+                        if (opt.correct) {
+                            btnStyle = "bg-emerald-100 border-emerald-400 text-emerald-900 font-medium";
+                        } else {
+                            btnStyle = "bg-amber-100 border-amber-400 text-amber-900 font-medium";
+                        }
+                    } else if (opt.correct) {
+                        btnStyle = "bg-emerald-50 border-emerald-300 text-emerald-800 font-medium";
+                    } else {
+                        btnStyle = "bg-white border-slate-100 text-slate-400 opacity-60";
+                    }
+                }
+
+                optionsHtml += `
+                    <button ${disabledAttr} onclick="selectOption(${idx})" class="w-full text-left p-4 rounded-xl border-2 transition flex items-center justify-between ${btnStyle}">
+                        <span><strong class="mr-2">${String.fromCharCode(65 + idx)}.</strong> ${opt.text}</span>
+                    </button>
+                `;
+            });
+
+            let feedbackHtml = '';
+            if (answered) {
+                const chosenIdx = userAnswers[currentIndex];
+                const isCorrect = qData.options[chosenIdx].correct;
+                const correctOpt = qData.options.find(o => o.correct);
+
+                if (isCorrect) {
+                    feedbackHtml = `
+                        <div class="mt-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 animate-fadeIn">
+                            <div class="flex items-center font-bold text-emerald-700 mb-1">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                Chính xác! 🎉
+                            </div>
+                            <p class="text-sm mb-2"><strong class="text-emerald-800">Bản dịch câu hỏi:</strong> ${qData.trans}</p>
+                            <p class="text-sm"><strong class="text-emerald-800">Từ khóa quan trọng:</strong> ${qData.keyWords}</p>
+                        </div>
+                    `;
+                } else {
+                    feedbackHtml = `
+                        <div class="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 animate-fadeIn">
+                            <div class="flex items-center font-bold text-amber-800 mb-1">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                Chưa chính xác! Đáp án đúng là: <span class="underline ml-1">${correctOpt.text}</span>
+                            </div>
+                            <p class="text-sm mb-2"><strong class="text-amber-900">Bản dịch câu hỏi:</strong> ${qData.trans}</p>
+                            <p class="text-sm"><strong class="text-amber-900">Từ khóa quan trọng:</strong> ${qData.keyWords}</p>
+                        </div>
+                    `;
+                }
+            }
+
+            container.innerHTML = `
+                <div class="mb-6">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md">Câu hỏi ${currentIndex + 1}</span>
+                    <h2 class="text-lg md:text-xl font-bold text-slate-800 mt-3">${qData.q}</h2>
+                </div>
+                <div class="space-y-3">
+                    ${optionsHtml}
+                </div>
+                ${feedbackHtml}
+            `;
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentIndex] = optionIndex;
+            renderQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentIndex < rawQuestions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+            } else {
+                alert("Bạn đã hoàn thành tất cả các câu hỏi trong bộ ôn tập! Tuyệt vời!");
+            }
+        }
+
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+            }
+        }
+
+        // Khởi chạy câu đầu tiên
+        renderQuestion();
+    </script>
+</body>
+</html>
+
+
+
+Chúc bạn ôn tập thật tốt và đạt kết quả cao!
